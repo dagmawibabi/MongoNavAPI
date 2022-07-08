@@ -7,52 +7,36 @@ let connectToDB = async (req, res) => {
     DB_URL = DB_URL.trim();
     DB_URL = DB_URL.replace(' ', '+');
     
-    let curDatabase = [];   
+    let curDatabase = {};   
 
     let connection = mongoose.createConnection(DB_URL);
     connection.on('open', async () => {
         // Get database overview
         await new Admin(connection.db).listDatabases(async (err, result) => {
-            curDatabase.push(
-                {
-                    totalDB: {
-                        databases: result.databases,
-                        totalSize: result.totalSize,
-                        totalSizeMb: result.totalSizeMb,
-                    }
-                }
-            );
+            curDatabase.totalDB = {
+                databases: result.databases,
+                totalSize: result.totalSize,
+                totalSizeMb: result.totalSizeMb,
+            };
         });
 
     
 
         // One DB Stats
         await connection.db.stats().then((result)=>{
-            curDatabase.push(
-                {
-                    stats: result
-                }
-            );
+            curDatabase.stats = result;
         });
         // Lists all collections names
         await connection.db.listCollections().toArray((err, names) => {
-            curDatabase.push(
-                {
-                    collections: names
-                }
-            );
+            curDatabase.collections= names;
         });
 
 
-        curDatabase.push(
-            {
-                serverInfo: {
-                    host: connection.host,
-                    port: connection.port,
-                }
-            }
-        );
-        
+        curDatabase.serverInfo = {
+            host: connection.host,
+            port: connection.port,
+        };
+
         // host port name connection.host connection.port connection.name
         res.send(JSON.stringify(curDatabase));
     });
