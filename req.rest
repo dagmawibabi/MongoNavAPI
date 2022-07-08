@@ -1,1 +1,1 @@
-GET http://localhost:3000/mongonavapi/
+GET http://localhost:3000/mna/
