@@ -1,2 +1,2 @@
 # MongoNavAPI
-An API for a simple MongoDB navigating mobile app
+A simple mongodb navigrating api for a mobile app
