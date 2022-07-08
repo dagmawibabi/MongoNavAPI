@@ -1,1 +1,1 @@
-GET http://localhost:8008/connect?connectionString=mongodb+srv://dagmawibabi:dagmawibabi7@cluster0.fivp4.mongodb.net/cluster0
+GET http://localhost:3000/mongonavapi/
