@@ -14,8 +14,8 @@ app.listen(port, () => {
 });
 
 // Route Handlers
-app.get('/', (req, res) => {
+app.get('/mongonavapi/', (req, res) => {
     res.send('Welcome!');
 });
 
-app.use('/connect', connectRoute);
+app.use('/mongonavapi/connect', connectRoute);
