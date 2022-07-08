@@ -2,31 +2,64 @@ let mongoose = require('mongoose');
 let Admin = mongoose.mongo.Admin;
 
 let connectToDB = async (req, res) => {
+    console.log('connecting to db');
     let DB_URL = req.query.connectionString;
     DB_URL = DB_URL.trim();
     DB_URL = DB_URL.replace(' ', '+');
     
-    let allDatabases;   
+    let curDatabase = [];   
 
     let connection = mongoose.createConnection(DB_URL);
-    connection.on('open', () => {
-        // Lists all databases
-        new Admin(connection.db).listDatabases((err, result) => {
-            allDatabases = result.databases;  
-            console.log(allDatabases);
+    connection.on('open', async () => {
+        // Get database overview
+        await new Admin(connection.db).listDatabases(async (err, result) => {
+            curDatabase.push(
+                {
+                    totalDB: {
+                        databases: result.databases,
+                        totalSize: result.totalSize,
+                        totalSizeMb: result.totalSizeMb,
+                    }
+                }
+            );
         });
+
+    
+
         // One DB Stats
-        connection.db.stats().then((result)=>{
-            // console.log(result);
+        await connection.db.stats().then((result)=>{
+            curDatabase.push(
+                {
+                    stats: result
+                }
+            );
         });
         // Lists all collections names
-        connection.db.listCollections().toArray((err, names) => {
-            // console.log(names); 
+        await connection.db.listCollections().toArray((err, names) => {
+            curDatabase.push(
+                {
+                    collections: names
+                }
+            );
         });
+
+
+        curDatabase.push(
+            {
+                serverInfo: {
+                    host: connection.host,
+                    port: connection.port,
+                }
+            }
+        );
+        
+        // host port name connection.host connection.port connection.name
+        res.send(JSON.stringify(curDatabase));
     });
 
-
-    res.send('done');
+    // connection.close();
+    
+    
 }
 
 module.exports = {connectToDB};
