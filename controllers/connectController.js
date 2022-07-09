@@ -31,6 +31,7 @@ let connectToDB = async (req, res) => {
                 port: nativeConnection.port,
             };
             res.send(curDatabase);
+            await mongoose.disconnect();
         });
     });
 
