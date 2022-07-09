@@ -30,8 +30,8 @@ let connectToDB = async (req, res) => {
                 host: nativeConnection.host,
                 port: nativeConnection.port,
             };
+            closeConnection();
             res.send(curDatabase);
-            await mongoose.disconnect();
         });
     });
 
@@ -69,9 +69,10 @@ let connectToDB = async (req, res) => {
     // connection.close();
     
     // res.send(curDatabase);
+}
 
-    
-    
+async function closeConnection()  {
+    await mongoose.disconnect();
 }
 
 module.exports = {connectToDB};
