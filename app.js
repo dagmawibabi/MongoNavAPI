@@ -1,12 +1,20 @@
 let express = require('express');
-let mongoose = require('mongoose');
 let app = express();
+let cors = require('cors');
 
 // Routes
 let connectRoute = require('./routes/connectRoute');
 
 // ENV
 let port = process.env.PORT || 3000;
+
+// CORS
+app.use(
+    cors({
+        origin: "*",
+        credentials: true,
+    })
+)
 
 // Server
 app.listen(port, () => {
@@ -18,4 +26,4 @@ app.get('/mna/', (req, res) => {
     res.send('Welcome!');
 });
 
-app.use('/mna/connect', connectRoute);
+app.use('/mna/connect/', connectRoute);
