@@ -10,7 +10,7 @@ let connectToDB = async (req, res) => {
     
 
     // connect
-    mongoose.connect(DB_URL,  {  useNewUrlParser: true ,  useUnifiedTopology: true }).then( (MongooseNode) => {                             
+    await mongoose.connect(DB_URL,  {  useNewUrlParser: true ,  useUnifiedTopology: true }).then( (MongooseNode) => {                             
         let nativeConnection = MongooseNode.connections[0];        
         new Admin(nativeConnection.db).listDatabases(async (err, result) => {
             curDatabase["totalDB"] = {
