@@ -38,7 +38,8 @@ let connectToDB = async (req, res) => {
         };
 
         // host port name connection.host connection.port connection.name
-        res.send(JSON.stringify(curDatabase));
+        // console.log(curDatabase);
+        res.send(curDatabase);
     });
 
     // connection.close();
