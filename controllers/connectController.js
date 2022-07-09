@@ -20,8 +20,6 @@ let connectToDB = async (req, res) => {
             };
         });
 
-    
-
         // One DB Stats
         await connection.db.stats().then((result)=>{
             curDatabase.stats = result;
@@ -30,19 +28,21 @@ let connectToDB = async (req, res) => {
         await connection.db.listCollections().toArray((err, names) => {
             curDatabase.collections= names;
         });
-
-
+        // Server info
         curDatabase.serverInfo = {
             host: connection.host,
             port: connection.port,
         };
 
-        // host port name connection.host connection.port connection.name
         // console.log(curDatabase);
-        res.send(curDatabase);
+        res.send(JSON.stringify(curDatabase));
+        connection.close();
     });
 
     // connection.close();
+    
+    // res.send(curDatabase);
+
     
     
 }
