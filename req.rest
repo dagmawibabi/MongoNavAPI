@@ -1,1 +1,1 @@
-GET http://localhost:3000/mna/connect?connectionString=mongodb+srv://
+GET http://localhost:3000/mna/connect/?connectionString=mongodb+srv://
